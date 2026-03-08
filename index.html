@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQB Launcher</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="bg-fx"></div>
+
+    <div class="page-container">
+        
+        <nav>
+            <div class="nav-content">
+                <div class="logo">
+                    <div class="logo-sq">AQB</div>
+                    <div class="logo-txt">AQB<span>Launcher</span></div>
+                </div>
+                <div class="nav-links">
+                    <a href="#hero">ГЛАВНАЯ</a>
+                    <a href="#gallery">ИНТЕРФЕЙС</a>
+                    <a href="#features">ФУНКЦИИ</a>
+                    <a href="https://github.com/akybefff/installerlauncher" target="_blank" class="git-btn">GITHUB</a>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <div class="badge">VERSION 1.0.4 STABLE</div>
+                <h1>aBQlauncher</h1>
+                <p>Прикольный лаунчер для совместной игры с друзьями <br>и милый лаунчер конечно же</p>
+                <div class="hero-btns">
+                    <a href="https://github.com/akybefff/installerlauncher/releases/download/v1.0.0/AQB_Setup.1.0.4.exe" class="btn btn-primary">СКАЧАТЬ СЕЙЧАС</a>
+                    <a href="#gallery" class="btn btn-outline">СМОТРЕТЬ ИНТЕРФЕЙС</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery" id="gallery">
+            <h2 class="section-title">ГАЛЕРЕЯ ПРОЕКТА</h2>
+            <div class="row-container">
+                
+                <div class="shot-card" onclick="view('https://i.imgur.com/ARx4rtx.png')">
+                    <img src="https://i.imgur.com/ARx4rtx.png" alt="Main Menu">
+                    <div class="shot-info">ГЛАВНОЕ МЕНЮ <span>v1.0.4</span></div>
+                </div>
+
+                <div class="shot-card" onclick="view('https://i.imgur.com/EQv1gIs.png')">
+                    <img src="https://i.imgur.com/EQv1gIs.png" alt="Skins">
+                    <div class="shot-info">СИСТЕМА СКИНОВ <span>READY</span></div>
+                </div>
+
+                <div class="shot-card" onclick="view('https://i.imgur.com/Systp77.png')">
+                    <img src="https://i.imgur.com/Systp77.png" alt="Settings">
+                    <div class="shot-info">НАСТРОЙКИ <span>danyapidor</span></div>
+                </div>
+
+                <div class="shot-card wait">
+                    <div class="wait-overlay">
+                        <span>В РАЗРАБОТКЕ</span>
+                    </div>
+                    <img src="https://i.imgur.com/oFbkBSC.png" alt="Mods development">
+                    <div class="shot-info">КАТАЛОГ МОДОВ <span>SOON</span></div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="row-container">
+                <div class="f-card">
+                    <div class="f-icon">⚡</div>
+                    <h3>WEB INSTALLER</h3>
+                    <p>Инсталлер сам вытянет лаунчер с Гитхаба и развернет его в Roaming за пару секунд.</p>
+                </div>
+                <div class="f-card">
+                    <div class="f-icon">👕</div>
+                    <h3>CUSTOM SKINS</h3>
+                    <p>Уникальная система внедрения скинов через ресурспак прямо в игрового персонажа.</p>
+                </div>
+                <div class="f-card">
+                    <div class="f-icon">⚙</div>
+                    <h3>AUTO-JAVA</h3>
+                    <p>Лаунчер сам определит, какая Java нужна (8, 17 или 21), и установит её автоматически.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="foot">© 2026 aKyBeFf project. THE ONYX CARTEL.</div>
+        </footer>
+
+    </div> 
+
+    <div id="lb" class="lb" onclick="hide()">
+        <img id="lb-img">
+    </div>
+
+    <script>
+        function view(u) {
+            const l = document.getElementById('lb');
+            document.getElementById('lb-img').src = u;
+            l.classList.add('on');
+        }
+        function hide() {
+            document.getElementById('lb').classList.remove('on');
+        }
+    </script>
+</body>
+</html>
