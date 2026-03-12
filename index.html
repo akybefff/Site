@@ -3,122 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AQB Launcher</title>
+    <title>AQBLauncher</title>
     
     <link rel="stylesheet" href="style.css">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="bg-fx"></div>
+    <div class="bg-animated">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
 
     <div class="page-container">
         
-        <nav>
+        <nav class="glass-nav">
             <div class="nav-content">
                 <div class="logo">
-                    <div class="logo-sq">AQB</div>
+                    <div class="logo-icon">
+                        <img src="img/logo.png" alt="AQB Logo">
+                    </div>
                     <div class="logo-txt">AQB<span>Launcher</span></div>
                 </div>
                 <div class="nav-links">
-                    <a href="#hero">ГЛАВНАЯ</a>
-                    <a href="#gallery">ИНТЕРФЕЙС</a>
-                    <a href="#features">ФУНКЦИИ</a>
-                    <a href="https://github.com/akybefff/installerlauncher" target="_blank" class="git-btn">GITHUB</a>
+                    <a href="#hero">Главная</a>
+                    <a href="#features">Особенности</a>
+                    <a href="#gallery">Интерфейс</a>
+                </div>
+                <div class="nav-action">
+                    <a href="https://github.com/akybefff/installerlauncher/releases/latest/download/aqb-installer.exe" target="_blank" class="btn btn-sm btn-github">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        GitHub
+                    </a>
                 </div>
             </div>
         </nav>
 
         <section class="hero" id="hero">
             <div class="hero-content">
-                <div class="badge">VERSION 1.0.8 STABLE</div>
-                <h1>aQBlauncher</h1>
-                <p>Прикольный лаунчер для совместной игры с друзьями <br>и милый лаунчер конечно же</p>
+                <div class="badge-container">
+                    <span class="badge pulse">Версия 1.0.8 Stable</span>
+                </div>
+                <h1 class="hero-title">Открой новый уровень <br><span class="gradient-text">совместной игры</span></h1>
+                <p class="hero-desc">Прикольный и милый лаунчер для идеальной игры с друзьями. Максимальная производительность, автоматическая настройка и уникальные скины в одном клике от тебя.</p>
                 <div class="hero-btns">
-                    <a href="https://github.com/akybefff/installerlauncher/releases/latest/download/aqb-installer.exe" class="btn btn-primary">СКАЧАТЬ СЕЙЧАС</a>
-                    <a href="#gallery" class="btn btn-outline">СМОТРЕТЬ ИНТЕРФЕЙС</a>
+                    <a href="https://github.com/akybefff/installerlauncher/releases/latest/download/aqb-installer.exe" class="btn btn-primary btn-glow">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Скачать сейчас
+                    </a>
+                    <a href="#gallery" class="btn btn-secondary">Смотреть интерфейс</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="section-header">
+                <h2>Ключевые функции</h2>
+                <p>Всё, что нужно для комфортной игры, уже встроено</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card glass-panel">
+                    <div class="f-icon-wrap">⚡</div>
+                    <h3>Удобное изменение фона</h3>
+                    <p>Легко менять фоновые изображения для персонализации вашего лаунчера.</p>
+                </div>
+                <div class="feature-card glass-panel">
+                    <div class="f-icon-wrap">👕</div>
+                    <h3>Custom Skins System</h3>
+                    <p>Уникальная система внедрения скинов через ресурспак. Твой персонаж будет выглядеть именно так, как ты хочешь.</p>
+                </div>
+                <div class="feature-card glass-panel">
+                    <div class="f-icon-wrap">⚙️</div>
+                    <h3>Сборки</h3>
+                    <p>Забудь про сложности установки модов, ведь в нашем лаунчере есть способность создавать свои личные сборки с помощью Modrinth API </p>
                 </div>
             </div>
         </section>
 
         <section class="gallery" id="gallery">
-            <h2 class="section-title">ГАЛЕРЕЯ ПРОЕКТА</h2>
-            <div class="row-container">
-                
-                <div class="shot-card" onclick="view('img/main.png')">
-                    <img src="img/main.png" alt="Main Menu">
-                    <div class="shot-info">ГЛАВНОЕ МЕНЮ <span>v1.0.8</span></div>
-                </div>
-
-                <div class="shot-card" onclick="view('img/skins.png')">
-                    <img src="img/skins.png" alt="Skins">
-                    <div class="shot-info">СИСТЕМА СКИНОВ <span>READY</span></div>
-                </div>
-
-                <div class="shot-card" onclick="view('img/settings.png')">
-                    <img src="img/settings.png" alt="Settings">
-                    <div class="shot-info">НАСТРОЙКИ <span>danyapidor</span></div>
-                </div>
-
-                <div class="shot-card wait">
-                    <div class="wait-overlay">
-                        <span>В РАЗРАБОТКЕ</span>
-                    </div>
-                    <img src="img/mods.png" alt="Mods development">
-                    <div class="shot-info">КАТАЛОГ МОДОВ <span>SOON</span></div>
-                </div>
-
+            <div class="section-header">
+                <h2>Галерея проекта</h2>
+                <p>Стильный и продуманный до мелочей дизайн</p>
             </div>
-        </section>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item glass-panel" onclick="view('https://i.imgur.com/ARx4rtx.png')">
+                    <div class="img-wrapper">
+                        <img src="https://i.imgur.com/ARx4rtx.png" alt="Main Menu">
+                        <div class="img-overlay">Кликните для увеличения</div>
+                    </div>
+                    <div class="item-info">
+                        <h4>Главное меню</h4>
+                        <span class="status-badge">v1.0.8</span>
+                    </div>
+                </div>
 
-        <section class="features" id="features">
-            <div class="row-container">
-                <div class="f-card">
-                    <div class="f-icon">⚡</div>
-                    <h3>WEB INSTALLER</h3>
-                    <p>Инсталлер сам вытянет лаунчер с Гитхаба и развернет его в Roaming за пару секунд.</p>
+                <div class="gallery-item glass-panel" onclick="view('https://i.imgur.com/EQv1gIs.png')">
+                    <div class="img-wrapper">
+                        <img src="https://i.imgur.com/EQv1gIs.png" alt="Skins">
+                        <div class="img-overlay">Кликните для увеличения</div>
+                    </div>
+                    <div class="item-info">
+                        <h4>Система скинов</h4>
+                        <span class="status-badge ready">READY</span>
+                    </div>
                 </div>
-                <div class="f-card">
-                    <div class="f-icon">👕</div>
-                    <h3>CUSTOM SKINS</h3>
-                    <p>Уникальная система внедрения скинов через ресурспак прямо в игрового персонажа.</p>
+
+                <div class="gallery-item glass-panel" onclick="view('https://i.imgur.com/Systp77.png')">
+                    <div class="img-wrapper">
+                        <img src="https://i.imgur.com/Systp77.png" alt="Settings">
+                        <div class="img-overlay">Кликните для увеличения</div>
+                    </div>
+                    <div class="item-info">
+                        <h4>Настройки</h4>
+                        <span class="status-badge dev">Dev Build</span>
+                    </div>
                 </div>
-                <div class="f-card">
-                    <div class="f-icon">⚙</div>
-                    <h3>AUTO-JAVA</h3>
-                    <p>Лаунчер сам определит, какая Java нужна (8, 17 или 21), и установит её автоматически.</p>
+
+                <div class="gallery-item glass-panel" onclick="view('https://i.imgur.com/oFbkBSC.png')">
+                    <div class="img-wrapper">
+                        <img src="https://i.imgur.com/oFbkBSC.png" alt="Mods development">
+                        <div class="img-overlay">Кликните для увеличения</div>
+                    </div>
+                    <div class="item-info">
+                        <h4>Каталог модов</h4>
+                        <span class="status-badge ready">READY</span>
+                    </div>
                 </div>
             </div>
         </section>
 
         <footer>
-            <div class="foot">© 2026 aKyBeFf project.</div>
+            <div class="footer-content glass-panel">
+                <div class="footer-logo">AQB Launcher</div>
+                <div class="footer-text">© 2026 aKyBeFf project.<br>Создано с любовью для игроков.</div>
+            </div>
         </footer>
 
     </div> 
 
-    <div id="lb" class="lb" onclick="hide()">
-        <img id="lb-img">
+    <div id="lb" class="lightbox" onclick="hide()">
+        <div class="lb-content">
+            <img id="lb-img">
+            <div class="lb-close">×</div>
+        </div>
     </div>
 
     <script>
         function view(u) {
             const l = document.getElementById('lb');
-            document.getElementById('lb-img').src = u;
-            l.classList.add('on');
+            const img = document.getElementById('lb-img');
+            img.src = u;
+            l.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
         function hide() {
-            document.getElementById('lb').classList.remove('on');
+            document.getElementById('lb').classList.remove('active');
+            document.body.style.overflow = 'auto';
         }
     </script>
 </body>
 </html>
-
-
-
-
-
-
