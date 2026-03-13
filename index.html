@@ -26,20 +26,16 @@
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:#fff;font-family:var(--body);overflow-x:hidden;cursor:none;}
 
-/* CURSOR */
 #C{position:fixed;width:6px;height:6px;background:var(--g);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);}
 #CR{position:fixed;width:28px;height:28px;border:1px solid rgba(57,255,20,.5);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:left .09s,top .09s,width .25s,height .25s,border-color .2s;}
 
-/* NOISE */
 #noise{position:fixed;inset:0;z-index:9997;pointer-events:none;opacity:.025;
   background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E") repeat;
   background-size:160px;animation:nz .1s steps(2) infinite;}
 @keyframes nz{0%{transform:translate(0,0)}33%{transform:translate(-2px,1px)}66%{transform:translate(1px,-2px)}100%{transform:translate(2px,1px)}}
 
-/* CANVAS */
 #cv{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
-/* NAV */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:500;
   display:flex;align-items:center;justify-content:space-between;
@@ -71,7 +67,6 @@ nav{
 .ndl:hover{box-shadow:0 0 28px var(--gg)!important;transform:translateY(-1px)!important;}
 .ndl svg{flex-shrink:0;}
 
-/* ── HERO ── */
 #hero{
   position:relative;z-index:10;
   min-height:100vh;
@@ -146,8 +141,7 @@ nav{
   transition:border-color .3s,color .3s,transform .2s;
 }
 .btn-o:hover{border-color:rgba(57,255,20,.4);color:var(--g);transform:translateY(-2px);}
-
-/* STATS ROW */
+  
 .hero-stats{
   display:flex;gap:0;margin-top:56px;
   border-top:1px solid var(--bd);
@@ -163,7 +157,6 @@ nav{
 .hstat-n.loading{color:rgba(57,255,20,.3);font-size:32px;}
 .hstat-l{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.2);text-transform:uppercase;margin-top:5px;display:block;}
 
-/* HERO RIGHT — mockup */
 .hero-right{
   position:relative;z-index:2;
   display:flex;align-items:center;justify-content:center;
@@ -241,7 +234,6 @@ nav{
 .mk-progf{height:100%;background:var(--g);border-radius:2px;width:0;animation:pf 2.5s 1.5s ease forwards;}
 @keyframes pf{to{width:68%;}}
 
-/* MARQUEE */
 .mq-band{
   position:relative;z-index:10;overflow:hidden;
   padding:0;background:#000;
@@ -256,7 +248,6 @@ nav{
 .mq-inner span:hover{color:var(--g);}
 @keyframes mqr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* BIG NUMBERS */
 #bignums{
   position:relative;z-index:10;
   display:grid;grid-template-columns:repeat(4,1fr);
@@ -281,7 +272,6 @@ nav{
 .bn:hover .bn-n{color:var(--g);text-shadow:0 0 28px rgba(57,255,20,.3);}
 .bn-l{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:4px;color:rgba(255,255,255,.18);text-transform:uppercase;margin-top:8px;display:block;}
 
-/* FEATURES */
 #features{position:relative;z-index:10;padding:120px 52px;}
 .sec-eyebrow{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:5px;color:var(--g);text-transform:uppercase;margin-bottom:12px;display:block;}
 .sec-title{font-family:var(--disp);font-size:clamp(48px,7vw,92px);line-height:.9;letter-spacing:-1px;color:#fff;margin-bottom:64px;}
@@ -322,7 +312,6 @@ nav{
 .fc-tag{display:inline-block;margin-top:18px;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--g);background:var(--gd);padding:4px 10px;border-radius:3px;}
 .fc-big{font-family:var(--disp);font-size:clamp(32px,4vw,58px);line-height:.95;color:var(--g);margin-bottom:12px;}
 
-/* GALLERY */
 #gallery{position:relative;z-index:10;padding:120px 52px;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
 .gallery-grid{
   display:grid;
@@ -369,7 +358,6 @@ nav{
 .gi-tag.ready{color:#00cfff;background:rgba(0,207,255,.08);border:1px solid rgba(0,207,255,.2);}
 .gi-tag.dev{color:#ffaa00;background:rgba(255,170,0,.08);border:1px solid rgba(255,170,0,.2);}
 
-/* CTA */
 #cta{
   position:relative;z-index:10;
   padding:160px 52px;text-align:center;overflow:hidden;
@@ -401,7 +389,6 @@ nav{
   border:1px solid var(--bd);border-radius:4px;padding:8px 16px;
 }
 
-/* FOOTER */
 footer{
   position:relative;z-index:10;
   border-top:1px solid var(--bd);
@@ -421,8 +408,7 @@ footer{
 .flinks a:first-child{border-left:1px solid var(--bd);}
 .flinks a:hover{color:var(--g);}
 .fcopy{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.1);letter-spacing:1px;text-align:right;line-height:1.8;}
-
-/* LIGHTBOX */
+  
 #lb{
   position:fixed;inset:0;z-index:99990;
   background:rgba(0,0,0,.92);backdrop-filter:blur(20px);
@@ -438,7 +424,6 @@ footer{
 }
 .lb-x:hover{color:var(--g);}
 
-/* RIPPLE */
 .rip{position:fixed;border-radius:50%;border:1px solid rgba(57,255,20,.35);pointer-events:none;z-index:9980;animation:rA .6s ease-out forwards;}
 @keyframes rA{from{width:0;height:0;opacity:1;transform:translate(-50%,-50%)}to{width:70px;height:70px;opacity:0;transform:translate(-50%,-50%)}}
 
@@ -561,7 +546,7 @@ footer{
       <div>
         <span class="fc-num">02</span>
         <span class="fc-icon">🔍</span>
-        <h3>МАРКЕТ МОДОВ</h3>
+        <h3>Список МОДОВ</h3>
         <p>Тысячи модов через Modrinth API. Поиск по категориям, автозагрузка зависимостей одной кнопкой.</p>
         <span class="fc-tag">Modrinth API</span>
       </div>
