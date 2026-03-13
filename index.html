@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AQB Launcher — Твой Minecraft, твои правила</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=JetBrains+Mono:wght@400;700;800&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --g:#39ff14;
+  --gd:rgba(57,255,20,0.1);
+  --gg:rgba(57,255,20,0.4);
+  --bg:#050505;
+  --s1:#0a0a0a;
+  --s2:#0f0f0f;
+  --bd:rgba(255,255,255,0.06);
+  --red:#ff2b2b;
+  --mono:'JetBrains Mono',monospace;
+  --disp:'Black Han Sans',sans-serif;
+  --body:'Montserrat',sans-serif;
+}
+
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:#fff;font-family:var(--body);overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+#C{position:fixed;width:6px;height:6px;background:var(--g);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);}
+#CR{position:fixed;width:28px;height:28px;border:1px solid rgba(57,255,20,.5);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:left .09s,top .09s,width .25s,height .25s,border-color .2s;}
+
+/* NOISE */
+#noise{position:fixed;inset:0;z-index:9997;pointer-events:none;opacity:.025;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E") repeat;
+  background-size:160px;animation:nz .1s steps(2) infinite;}
+@keyframes nz{0%{transform:translate(0,0)}33%{transform:translate(-2px,1px)}66%{transform:translate(1px,-2px)}100%{transform:translate(2px,1px)}}
+
+/* CANVAS */
+#cv{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;height:64px;
+  border-bottom:1px solid var(--bd);
+  background:rgba(5,5,5,.88);
+  backdrop-filter:blur(24px);
+  transition:background .3s,border-color .3s;
+}
+.nlogo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nlogo-img{width:32px;height:32px;border-radius:8px;overflow:hidden;background:var(--gd);border:1px solid rgba(57,255,20,.2);}
+.nlogo-img img{width:100%;height:100%;object-fit:contain;}
+.nlogo-txt{font-family:var(--disp);font-size:20px;letter-spacing:1px;color:#fff;}
+.nlogo-txt em{color:var(--g);font-style:normal;}
+.nlinks{display:flex;gap:0;align-items:center;}
+.nlinks a{
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.3);text-decoration:none;
+  padding:8px 20px;border-left:1px solid var(--bd);
+  transition:color .2s,background .2s;
+}
+.nlinks a:hover{color:var(--g);background:var(--gd);}
+.ndl{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--g)!important;color:#000!important;
+  font-weight:800!important;border:none!important;
+  transition:box-shadow .3s,transform .15s!important;
+}
+.ndl:hover{box-shadow:0 0 28px var(--gg)!important;transform:translateY(-1px)!important;}
+.ndl svg{flex-shrink:0;}
+
+/* ── HERO ── */
+#hero{
+  position:relative;z-index:10;
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:100px 52px 60px;
+  gap:60px;overflow:hidden;
+}
+
+.hero-left{position:relative;z-index:2;}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:var(--g);border:1px solid rgba(57,255,20,.3);
+  padding:7px 16px;border-radius:4px;margin-bottom:28px;
+  opacity:0;animation:fup .6s .1s forwards;
+}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--g);border-radius:50%;box-shadow:0 0 8px var(--g);animation:bpulse 1.5s infinite;}
+@keyframes bpulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero-title{
+  font-family:var(--disp);
+  font-size:clamp(64px,9vw,130px);
+  line-height:.88;letter-spacing:-2px;
+  color:#fff;
+  opacity:0;animation:fup .7s .25s forwards;
+}
+.hero-title .gline{color:var(--g);position:relative;display:inline-block;}
+.hero-title .gline::after{
+  content:attr(data-t);position:absolute;top:0;left:0;
+  color:var(--red);animation:glitch 5s infinite;
+  clip-path:polygon(0 30%,100% 30%,100% 60%,0 60%);
+}
+@keyframes glitch{
+  0%,91%,100%{transform:none;opacity:0;}
+  92%{transform:translate(-4px,-1px);opacity:.8;}
+  94%{transform:translate(4px,2px);opacity:.7;}
+  96%{transform:translate(-2px,0);opacity:.8;}
+  98%{opacity:0;}
+}
+
+.hero-desc{
+  font-size:14px;font-weight:500;line-height:1.9;
+  color:rgba(255,255,255,.4);max-width:500px;
+  margin:24px 0 36px;
+  opacity:0;animation:fup .7s .4s forwards;
+}
+.hero-desc strong{color:rgba(255,255,255,.85);}
+
+.hero-btns{
+  display:flex;gap:12px;flex-wrap:wrap;
+  opacity:0;animation:fup .7s .55s forwards;
+}
+.btn-g{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--g);color:#000;
+  font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  padding:14px 36px;border:none;cursor:none;text-decoration:none;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+  transition:box-shadow .3s,transform .2s;position:relative;overflow:hidden;
+}
+.btn-g::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);opacity:0;transition:opacity .3s;}
+.btn-g:hover{box-shadow:0 0 40px rgba(57,255,20,.5),0 8px 30px rgba(57,255,20,.2);transform:translateY(-2px);}
+.btn-g:hover::before{opacity:1;}
+.btn-o{
+  display:inline-flex;align-items:center;gap:10px;
+  background:transparent;color:rgba(255,255,255,.55);
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:14px 32px;border:1px solid rgba(255,255,255,.14);cursor:none;text-decoration:none;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  transition:border-color .3s,color .3s,transform .2s;
+}
+.btn-o:hover{border-color:rgba(57,255,20,.4);color:var(--g);transform:translateY(-2px);}
+
+/* STATS ROW */
+.hero-stats{
+  display:flex;gap:0;margin-top:56px;
+  border-top:1px solid var(--bd);
+  opacity:0;animation:fup .7s .7s forwards;
+}
+.hstat{flex:1;padding:22px 0;border-right:1px solid var(--bd);}
+.hstat:last-child{border-right:none;}
+.hstat-n{
+  font-family:var(--disp);font-size:44px;
+  color:var(--g);line-height:1;display:block;
+  text-shadow:0 0 20px rgba(57,255,20,.25);
+}
+.hstat-n.loading{color:rgba(57,255,20,.3);font-size:32px;}
+.hstat-l{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.2);text-transform:uppercase;margin-top:5px;display:block;}
+
+/* HERO RIGHT — mockup */
+.hero-right{
+  position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;animation:fright .9s .5s forwards;
+}
+@keyframes fright{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
+
+.mockup-wrap{position:relative;width:100%;max-width:500px;}
+.mockup-glow{
+  position:absolute;top:50%;left:50%;
+  width:380px;height:380px;
+  background:radial-gradient(circle,rgba(57,255,20,.09) 0%,transparent 70%);
+  transform:translate(-50%,-50%);pointer-events:none;
+  animation:gpulse 3s ease-in-out infinite;
+}
+@keyframes gpulse{0%,100%{opacity:.5}50%{opacity:1}}
+.float-lbl{
+  position:absolute;
+  background:rgba(0,0,0,.9);border:1px solid rgba(57,255,20,.25);
+  padding:8px 14px;border-radius:8px;
+  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:2px;color:var(--g);
+  backdrop-filter:blur(10px);white-space:nowrap;
+  animation:flbob 3s ease-in-out infinite;z-index:2;
+}
+.fl1{top:-16px;right:-16px;}
+.fl2{bottom:24px;left:-24px;animation-delay:-1.5s;}
+@keyframes flbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.mockup{
+  background:var(--s1);border:1px solid rgba(57,255,20,.12);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 0 60px rgba(0,0,0,.8),0 0 0 1px rgba(57,255,20,.04);
+}
+.mk-bar{
+  padding:12px 16px;background:rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.mk-dots{display:flex;gap:7px;}
+.mk-dot{width:11px;height:11px;border-radius:50%;}
+.mk-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.18);}
+.mk-body{display:flex;height:300px;}
+.mk-side{
+  width:170px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.04);
+  padding:14px 10px;display:flex;flex-direction:column;gap:5px;
+}
+.mk-ni{
+  padding:9px 11px;border-radius:7px;
+  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:1px;
+  color:rgba(255,255,255,.22);display:flex;align-items:center;gap:7px;
+}
+.mk-ni.active{background:var(--gd);color:var(--g);}
+.mk-ni .d{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.mk-main{flex:1;padding:18px;display:flex;flex-direction:column;gap:8px;}
+.mk-ph{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.04);}
+.mk-pname{font-family:var(--disp);font-size:22px;letter-spacing:1px;color:var(--g);}
+.mk-psub{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);letter-spacing:2px;margin-top:2px;}
+.mk-pbtn{
+  background:var(--g);color:#000;
+  font-family:var(--mono);font-size:8px;font-weight:800;letter-spacing:2px;
+  padding:7px 16px;border:none;border-radius:6px;cursor:none;
+  animation:pkp 2s ease-in-out infinite;
+}
+@keyframes pkp{0%,100%{box-shadow:0 0 0 0 rgba(57,255,20,.4)}50%{box-shadow:0 0 0 5px rgba(57,255,20,0)}}
+.mk-mods{display:flex;flex-direction:column;gap:5px;flex:1;}
+.mk-mod{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 9px;background:rgba(255,255,255,.025);border-radius:6px;
+  font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.35);
+}
+.mk-mic{width:22px;height:22px;border-radius:5px;flex-shrink:0;}
+.mk-mn{font-weight:700;color:rgba(255,255,255,.55);}
+.mk-mt{margin-left:auto;font-size:7px;color:var(--g);background:var(--gd);padding:2px 6px;border-radius:3px;}
+.mk-prog{height:2px;background:rgba(255,255,255,.05);border-radius:2px;margin-top:auto;}
+.mk-progf{height:100%;background:var(--g);border-radius:2px;width:0;animation:pf 2.5s 1.5s ease forwards;}
+@keyframes pf{to{width:68%;}}
+
+/* MARQUEE */
+.mq-band{
+  position:relative;z-index:10;overflow:hidden;
+  padding:0;background:#000;
+  border-top:1px solid var(--bd);border-bottom:1px solid rgba(57,255,20,.15);
+}
+.mq-inner{display:flex;animation:mqr 20s linear infinite;white-space:nowrap;}
+.mq-inner span{
+  font-family:var(--disp);font-size:13px;
+  color:rgba(57,255,20,.45);padding:12px 28px;letter-spacing:4px;
+  border-right:1px solid rgba(57,255,20,.08);transition:color .3s;
+}
+.mq-inner span:hover{color:var(--g);}
+@keyframes mqr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* BIG NUMBERS */
+#bignums{
+  position:relative;z-index:10;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--bd);
+}
+.bn{
+  padding:56px 48px;border-right:1px solid var(--bd);
+  position:relative;overflow:hidden;transition:background .3s;
+  opacity:0;transform:translateY(16px);
+}
+.bn:last-child{border-right:none;}
+.bn:hover{background:var(--s1);}
+.bn::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .4s;
+}
+.bn:hover::before{transform:scaleX(1);}
+.bn-n{
+  font-family:var(--disp);font-size:68px;line-height:1;
+  color:#fff;display:block;transition:color .3s;
+}
+.bn:hover .bn-n{color:var(--g);text-shadow:0 0 28px rgba(57,255,20,.3);}
+.bn-l{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:4px;color:rgba(255,255,255,.18);text-transform:uppercase;margin-top:8px;display:block;}
+
+/* FEATURES */
+#features{position:relative;z-index:10;padding:120px 52px;}
+.sec-eyebrow{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:5px;color:var(--g);text-transform:uppercase;margin-bottom:12px;display:block;}
+.sec-title{font-family:var(--disp);font-size:clamp(48px,7vw,92px);line-height:.9;letter-spacing:-1px;color:#fff;margin-bottom:64px;}
+
+.feat-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:2px;
+}
+.fc{
+  background:var(--s1);border:1px solid var(--bd);
+  padding:40px 32px;position:relative;overflow:hidden;
+  transition:border-color .3s,background .3s;
+  opacity:0;transform:translateY(24px);
+}
+.fc:hover{background:var(--s2);border-color:rgba(57,255,20,.15);}
+.fc::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(57,255,20,.06),transparent 55%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.fc:hover::after{opacity:1;}
+.fc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .4s;
+}
+.fc:hover::before{transform:scaleX(1);}
+.fc-a{grid-column:span 5;}
+.fc-b{grid-column:span 7;}
+.fc-c{grid-column:span 4;}
+.fc-d{grid-column:span 4;}
+.fc-e{grid-column:span 4;}
+.fc-num{font-family:var(--disp);font-size:90px;color:rgba(255,255,255,.03);position:absolute;bottom:-8px;right:14px;line-height:1;transition:color .3s;}
+.fc:hover .fc-num{color:rgba(57,255,20,.06);}
+.fc-icon{font-size:30px;margin-bottom:18px;display:block;}
+.fc h3{font-family:var(--disp);font-size:26px;letter-spacing:1px;color:#fff;margin-bottom:12px;}
+.fc p{font-size:12px;color:rgba(255,255,255,.32);line-height:1.9;max-width:360px;}
+.fc-tag{display:inline-block;margin-top:18px;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--g);background:var(--gd);padding:4px 10px;border-radius:3px;}
+.fc-big{font-family:var(--disp);font-size:clamp(32px,4vw,58px);line-height:.95;color:var(--g);margin-bottom:12px;}
+
+/* GALLERY */
+#gallery{position:relative;z-index:10;padding:120px 52px;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:2px;max-width:1300px;margin:0 auto;
+}
+.gi{
+  position:relative;overflow:hidden;
+  border:1px solid var(--bd);
+  cursor:none;
+  opacity:0;transform:translateY(20px);
+}
+.gi:hover{border-color:rgba(57,255,20,.2);}
+.gi img{
+  width:100%;height:260px;object-fit:cover;
+  display:block;
+  filter:brightness(.85) saturate(.9);
+  transition:transform .5s ease,filter .3s;
+}
+.gi:hover img{transform:scale(1.04);filter:brightness(1) saturate(1.1);}
+.gi-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 50%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:24px;
+  pointer-events:none;
+}
+.gi-hover{
+  position:absolute;inset:0;
+  background:rgba(57,255,20,.06);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.5);
+  opacity:0;transition:opacity .3s;
+  pointer-events:none;
+}
+.gi:hover .gi-hover{opacity:1;}
+.gi-title{font-family:var(--disp);font-size:22px;letter-spacing:1px;color:#fff;margin-bottom:6px;}
+.gi-tag{
+  display:inline-block;
+  font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 10px;border-radius:3px;
+}
+.gi-tag.stable{color:var(--g);background:var(--gd);border:1px solid rgba(57,255,20,.2);}
+.gi-tag.ready{color:#00cfff;background:rgba(0,207,255,.08);border:1px solid rgba(0,207,255,.2);}
+.gi-tag.dev{color:#ffaa00;background:rgba(255,170,0,.08);border:1px solid rgba(255,170,0,.2);}
+
+/* CTA */
+#cta{
+  position:relative;z-index:10;
+  padding:160px 52px;text-align:center;overflow:hidden;
+}
+.cta-bg{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-family:var(--disp);font-size:clamp(100px,18vw,260px);
+  color:rgba(57,255,20,.022);line-height:1;letter-spacing:-4px;
+  pointer-events:none;user-select:none;white-space:nowrap;
+}
+.cta-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:6px;color:var(--g);text-transform:uppercase;margin-bottom:20px;display:block;}
+.cta-title{
+  font-family:var(--disp);
+  font-size:clamp(60px,10vw,140px);
+  line-height:.88;letter-spacing:-3px;color:#fff;margin-bottom:28px;
+  position:relative;z-index:1;
+}
+.cta-title .gc{color:var(--g);}
+.cta-sub{font-size:13px;font-weight:500;color:rgba(255,255,255,.28);margin-bottom:48px;line-height:2;position:relative;z-index:1;}
+.cta-badges{
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+  margin-top:28px;position:relative;z-index:1;
+}
+.cbadge{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.22);background:rgba(255,255,255,.035);
+  border:1px solid var(--bd);border-radius:4px;padding:8px 16px;
+}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:10;
+  border-top:1px solid var(--bd);
+  padding:48px 52px;
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:40px;
+}
+.flogo{font-family:var(--disp);font-size:26px;letter-spacing:2px;}
+.flogo em{color:var(--g);font-style:normal;}
+.flinks{display:flex;gap:0;justify-content:center;}
+.flinks a{
+  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.18);text-decoration:none;
+  padding:8px 18px;border-right:1px solid var(--bd);
+  transition:color .2s;
+}
+.flinks a:first-child{border-left:1px solid var(--bd);}
+.flinks a:hover{color:var(--g);}
+.fcopy{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.1);letter-spacing:1px;text-align:right;line-height:1.8;}
+
+/* LIGHTBOX */
+#lb{
+  position:fixed;inset:0;z-index:99990;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+#lb.active{opacity:1;pointer-events:all;}
+#lb img{max-width:90vw;max-height:85vh;object-fit:contain;border:1px solid rgba(57,255,20,.2);border-radius:4px;}
+.lb-x{
+  position:absolute;top:28px;right:36px;
+  font-family:var(--disp);font-size:32px;color:rgba(255,255,255,.4);
+  cursor:none;transition:color .2s;user-select:none;
+}
+.lb-x:hover{color:var(--g);}
+
+/* RIPPLE */
+.rip{position:fixed;border-radius:50%;border:1px solid rgba(57,255,20,.35);pointer-events:none;z-index:9980;animation:rA .6s ease-out forwards;}
+@keyframes rA{from{width:0;height:0;opacity:1;transform:translate(-50%,-50%)}to{width:70px;height:70px;opacity:0;transform:translate(-50%,-50%)}}
+
+@keyframes fup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div id="C"></div>
+<div id="CR"></div>
+<div id="noise"></div>
+<canvas id="cv"></canvas>
+
+
+<nav id="nav">
+  <a class="nlogo" href="#hero">
+    <div class="nlogo-img"><img src="img/logo.png" alt="AQB"></div>
+    <div class="nlogo-txt"><em>AQB</em>Launcher</div>
+  </a>
+  <div class="nlinks">
+    <a href="#features">Фичи</a>
+    <a href="#gallery">Галерея</a>
+    <a href="https://github.com/akybefff/installerlauncher/releases/latest/download/aqb-installer.exe" target="_blank" class="ndl">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      Скачать
+    </a>
+  </div>
+</nav>
+
+
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-badge">Версия 1.1.1 Stable</div>
+    <h1 class="hero-title">
+      AQB<br>
+      <span class="gline" data-t="LAUNCHER">LAUNCHER</span>
+    </h1>
+    <p class="hero-desc">
+      <strong>Открой новый уровень совместной игры.</strong><br>
+      Прикольный и удобный лаунчер с автонастройкой, синхронизацией сборок и уникальными скинами.
+    </p>
+    <div class="hero-btns">
+      <a href="https://github.com/akybefff/installerlauncher/releases/latest/download/aqb-installer.exe" target="_blank" class="btn-g">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Скачать бесплатно
+      </a>
+      <a href="#gallery" class="btn-o">Смотреть интерфейс →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-n loading" id="dl-count">—</span><span class="hstat-l">Скачиваний</span></div>
+      <div class="hstat"><span class="hstat-n" data-target="50">0</span><span class="hstat-l">Версий MC</span></div>
+      <div class="hstat"><span class="hstat-n">∞</span><span class="hstat-l">Ваших сборок</span></div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="mockup-wrap">
+      <div class="mockup-glow"></div>
+      <div class="float-lbl fl1">☁ Синк активен</div>
+      <div class="float-lbl fl2">📦 6 модов загружено</div>
+      <div class="mockup">
+        <div class="mk-bar">
+          <div class="mk-dots">
+            <div class="mk-dot" style="background:#ff5f56"></div>
+            <div class="mk-dot" style="background:#ffbd2e"></div>
+            <div class="mk-dot" style="background:#27c93f"></div>
+          </div>
+          <span class="mk-label">AQB LAUNCHER</span>
+          <div style="width:40px"></div>
+        </div>
+        <div class="mk-body">
+          <div class="mk-side">
+            <div class="mk-ni active"><span class="d"></span>ГЛАВНАЯ</div>
+            <div class="mk-ni"><span class="d"></span>СКИНЫ</div>
+            <div class="mk-ni"><span class="d"></span>СБОРКИ</div>
+            <div class="mk-ni" style="margin-top:auto"><span class="d"></span>НАСТРОЙКИ</div>
+          </div>
+          <div class="mk-main">
+            <div class="mk-ph">
+              <div><div class="mk-pname">6564</div><div class="mk-psub">FORGE 1.20.1</div></div>
+              <button class="mk-pbtn">ИГРАТЬ</button>
+            </div>
+            <div class="mk-mods">
+              <div class="mk-mod"><div class="mk-mic" style="background:rgba(57,255,20,.12)"></div><span class="mk-mn">Sodium</span><span class="mk-mt">✓</span></div>
+              <div class="mk-mod"><div class="mk-mic" style="background:rgba(255,100,0,.12)"></div><span class="mk-mn">OptiFine</span><span class="mk-mt">✓</span></div>
+              <div class="mk-mod"><div class="mk-mic" style="background:rgba(80,80,255,.12)"></div><span class="mk-mn">JEI</span><span class="mk-mt">✓</span></div>
+            </div>
+            <div class="mk-prog"><div class="mk-progf"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="mq-band"><div class="mq-inner" id="mqEl"></div></div>
+
+
+<div id="bignums">
+  <div class="bn"><span class="bn-n" id="bn-dl">—</span><span class="bn-l">Скачиваний с GitHub</span></div>
+  <div class="bn"><span class="bn-n" data-target="50">0</span><span class="bn-l">Версий Minecraft</span></div>
+  <div class="bn"><span class="bn-n" data-target="1000">0</span><span class="bn-l">Модов в маркете</span></div>
+  <div class="bn"><span class="bn-n">∞</span><span class="bn-l">Ваших сборок</span></div>
+</div>
+
+
+<section id="features">
+  <span class="sec-eyebrow">// Возможности</span>
+  <div class="sec-title">ВСЁ ЧТО<br>НУЖНО</div>
+  <div class="feat-grid">
+    <div class="fc fc-a">
+      <span class="fc-num">01</span>
+      <span class="fc-icon">📦</span>
+      <h3>МОД-ПАКЕТЫ</h3>
+      <p>Создавай сборки и делись кодом с друзьями. Автосинхронизация через Firebase — у всех одинаковые моды.</p>
+      <span class="fc-tag">Firebase Sync</span>
+    </div>
+    <div class="fc fc-b" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+      <div>
+        <span class="fc-num">02</span>
+        <span class="fc-icon">🔍</span>
+        <h3>МАРКЕТ МОДОВ</h3>
+        <p>Тысячи модов через Modrinth API. Поиск по категориям, автозагрузка зависимостей одной кнопкой.</p>
+        <span class="fc-tag">Modrinth API</span>
+      </div>
+      <div class="fc-big">1000+<br>МОДОВ</div>
+    </div>
+    <div class="fc fc-c">
+      <span class="fc-num">03</span>
+      <span class="fc-icon">✨</span>
+      <h3>ШЕЙДЕРЫ & РП</h3>
+      <p>Устанавливай шейдеры и ресурспаки прямо из лаунчера. Один клик — и готово.</p>
+      <span class="fc-tag">Один клик</span>
+    </div>
+    <div class="fc fc-d">
+      <span class="fc-num">04</span>
+      <span class="fc-icon">👕</span>
+      <h3>СКИНЫ</h3>
+      <p>4 слота под скины. Уникальная система через ресурспак. Ищи по нику.</p>
+      <span class="fc-tag">4 слота</span>
+    </div>
+    <div class="fc fc-e" style="background:var(--gd);border-color:rgba(57,255,20,.2);">
+      <span class="fc-num" style="color:rgba(57,255,20,.1)">05</span>
+      <span class="fc-icon">⚡</span>
+      <h3>АВТОНАСТРОЙКА</h3>
+      <p>Java качается автоматически. G1GC, настройка ОЗУ — из коробки. Просто жми ИГРАТЬ.</p>
+      <span class="fc-tag">Java Auto-Install</span>
+    </div>
+  </div>
+</section>
+
+
+<section id="gallery">
+  <span class="sec-eyebrow">// Интерфейс</span>
+  <div class="sec-title" style="margin-bottom:56px;">ГАЛЕРЕЯ<br>ПРОЕКТА</div>
+  <div class="gallery-grid">
+    <div class="gi" onclick="openLb('img/screen1.png')">
+      <img src="img/screen1.png" alt="Главное меню">
+      <div class="gi-overlay">
+        <div class="gi-title">Главное меню</div>
+        <span class="gi-tag stable">v1.1.1 Stable</span>
+      </div>
+      <div class="gi-hover">КЛИКНИ ДЛЯ УВЕЛИЧЕНИЯ</div>
+    </div>
+    <div class="gi" onclick="openLb('img/screen2.png')">
+      <img src="img/screen2.png" alt="Скины">
+      <div class="gi-overlay">
+        <div class="gi-title">Система скинов</div>
+        <span class="gi-tag ready">READY</span>
+      </div>
+      <div class="gi-hover">КЛИКНИ ДЛЯ УВЕЛИЧЕНИЯ</div>
+    </div>
+    <div class="gi" onclick="openLb('img/screen3.png')">
+      <img src="img/screen3.png" alt="Настройки">
+      <div class="gi-overlay">
+        <div class="gi-title">Настройки</div>
+        <span class="gi-tag dev">Dev Build</span>
+      </div>
+      <div class="gi-hover">КЛИКНИ ДЛЯ УВЕЛИЧЕНИЯ</div>
+    </div>
+    <div class="gi" onclick="openLb('img/screen4.png')">
+      <img src="img/screen4.png" alt="Каталог модов">
+      <div class="gi-overlay">
+        <div class="gi-title">Каталог модов</div>
+        <span class="gi-tag ready">READY</span>
+      </div>
+      <div class="gi-hover">КЛИКНИ ДЛЯ УВЕЛИЧЕНИЯ</div>
+    </div>
+  </div>
+</section>
+
+
+<section id="cta">
+  <div class="cta-bg">AQB</div>
+  <span class="cta-label">// Начни прямо сейчас</span>
+  <h2 class="cta-title">СКАЧАЙ<br><span class="gc">БЕСПЛАТНО</span></h2>
+  <p class="cta-sub">Никаких подписок. Никакой рекламы.<br>Java установится автоматически.</p>
+  <a href="https://github.com/akybefff/installerlauncher/releases/latest/download/aqb-installer.exe" target="_blank" class="btn-g" style="font-size:13px;padding:18px 52px;">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Скачать AQB Launcher
+  </a>
+  <div class="cta-badges">
+    <div class="cbadge">🪟 Windows 10/11</div>
+    <div class="cbadge">☕ Java — автоустановка</div>
+    <div class="cbadge">🆓 Бесплатно навсегда</div>
+    <div class="cbadge">📦 ~50 MB</div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="flogo"><em>AQB</em>Launcher</div>
+  <div class="flinks">
+    <a href="#features">Фичи</a>
+    <a href="#gallery">Галерея</a>
+    <a href="https://github.com/akybefff/installerlauncher" target="_blank">GitHub</a>
+  </div>
+  <div class="fcopy">© 2026 aKyBeFf project<br>Сделано с ❤️ для игроков</div>
+</footer>
+
+
+<div id="lb" onclick="closeLb()">
+  <img id="lb-img" alt="">
+  <div class="lb-x">×</div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
